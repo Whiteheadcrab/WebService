@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "books")
-public class Books
+public class Book
 {
     @Id
     @GeneratedValue
@@ -24,7 +24,7 @@ public class Books
     @NotNull
     private String isbn;
 
-    public Books(Long id, String bookName, String authorName, String isbn)
+    public Book(Long id, String bookName, String authorName, String isbn)
     {
         this.id = id;
         this.bookName = bookName;
@@ -32,7 +32,7 @@ public class Books
         this.isbn = isbn;
     }
 
-    public Books()
+    public Book()
     {
         super();
     }
