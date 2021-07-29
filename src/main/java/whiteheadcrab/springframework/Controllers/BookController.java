@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import whiteheadcrab.springframework.Exceptions.BookNotFoundException;
 import whiteheadcrab.springframework.Model.Book;
 import whiteheadcrab.springframework.Repositories.BookRepository;
 
@@ -32,18 +33,18 @@ public class BookController
 
     //Find book by id
     @GetMapping("/books/{id}")
-    public Book getBookById(@PathVariable(value = "id") Long id) throws BooksNotFoundException
+    public Book getBookById(@PathVariable(value = "id") Long id) throws Throwable
     {
-        return bookRepository.findById(id)
-                .orElseThrow(() -> new BooksNotFoundException(id));
+        return (Book) bookRepository.findById(id)
+                .orElseThrow(() -> new BookNotFoundException(id));
     }
 
     @PutMapping("/books/{id}")
     public Book updateBookNote(@PathVariable(value = "id") Long id,
-                               @Validated @RequestBody Book bookData) throws BooksNotFoundException
+                               @Validated @RequestBody Book bookData) throws Throwable
     {
-        Book book = bookRepository.findById(id)
-                .orElseThrow(() -> new BooksNotFoundException(id));
+        Book book = (Book) bookRepository.findById(id)
+                .orElseThrow(() -> new BookNotFoundException(id));
 
         book.setBookName(bookData.getBookName());
         book.setAuthorName(bookData.getAuthorName());
@@ -55,10 +56,10 @@ public class BookController
 
     //Find book by id and delete it
     @DeleteMapping("/books/{id}")
-    public ResponseEntity deleteBookById(@PathVariable(value = "id")  Long id) throws BooksNotFoundException
+    public ResponseEntity deleteBookById(@PathVariable(value = "id")  Long id) throws Throwable
     {
-        Book book = bookRepository.findById(id)
-                .orElseThrow(() -> new BooksNotFoundException(id));
+        Book book = (Book) bookRepository.findById(id)
+                .orElseThrow(() -> new BookNotFoundException(id));
 
         bookRepository.delete(book);
         return ResponseEntity.ok().build();
